@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net40;net5;net6;net7</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <LangVersion>default</LangVersion>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>GoodSimonVM (Victor Mulin) &lt;17sep96@gmail.com&gt;</Authors>
+        <RootNamespace>GoodSimonVM.AutoDiffLib</RootNamespace>
+        <PackageId>GoodSimonVM.AutoDiffLib</PackageId>
+        <Title>Automatic differentiation library</Title>
+        <Description>A simple library for differentiating various algebraic expressions</Description>        
+        <AssemblyVersion>1.0.0</AssemblyVersion>        
+        <PackageTags>math numeric</PackageTags>
+    </PropertyGroup>
+
+</Project>
