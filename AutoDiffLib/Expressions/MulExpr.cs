@@ -1,0 +1,32 @@
+﻿namespace GoodSimonVM.AutoDiffLib.Expressions;
+
+internal class MulExpr : BinaryExpr
+{
+    private const string OperatorFormat = "({0} * {1})";
+
+    public MulExpr(Expr l, Expr r) : base(OperatorFormat, l, r)
+    {
+    }
+
+    public override double Evaluate()
+    {
+        var l = Left.Evaluate();
+        var r = Right.Evaluate();
+        var res = l * r;
+        return res;
+    }
+
+    public override Expr Derivative(VariableExpr wrt)
+    {
+        var l = Left;
+        var r = Right;
+
+        var dl = Left.Derivative(wrt);
+        var dr = Right.Derivative(wrt);
+
+        var dlr = dl * r;
+        var ldr = l * dr;
+        var derivative = dlr + ldr;
+        return derivative;
+    }
+}
