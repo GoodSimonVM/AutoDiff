@@ -11,7 +11,11 @@
         <Title>Automatic differentiation library</Title>
         <Description>A simple library for differentiating various algebraic expressions</Description>        
         <AssemblyVersion>1.0.0</AssemblyVersion>        
-        <PackageTags>math numeric</PackageTags>
+        <PackageTags>math numeric</PackageTags>        
+        <Copyright>MIT</Copyright>        
+        <PackageProjectUrl>https://github.com/GoodSimonVM/AutoDiff</PackageProjectUrl>        
+        <RepositoryUrl>https://github.com/GoodSimonVM/AutoDiff</RepositoryUrl>        
+        <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 
 </Project>
