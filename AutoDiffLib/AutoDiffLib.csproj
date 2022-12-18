@@ -15,7 +15,8 @@
         <Copyright>MIT</Copyright>        
         <PackageProjectUrl>https://github.com/GoodSimonVM/AutoDiff</PackageProjectUrl>        
         <RepositoryUrl>https://github.com/GoodSimonVM/AutoDiff</RepositoryUrl>        
-        <RepositoryType>git</RepositoryType>
+        <RepositoryType>git</RepositoryType>        
+        <PackageLicenseUrl>https://github.com/GoodSimonVM/AutoDiff/blob/master/LICENSE.txt</PackageLicenseUrl>
     </PropertyGroup>
 
 </Project>
