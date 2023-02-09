@@ -5,7 +5,7 @@ internal class LgExpr : LogExpr
     private const string OperatorFormat = "lg({0})";
     private static readonly double Ln10 = System.Math.Log(10);
 
-    public LgExpr(Expr x) : base(OperatorFormat, x, System.Math.E)
+    public LgExpr(Expr x) : base(OperatorFormat, x, 10)
     {
     }
 
