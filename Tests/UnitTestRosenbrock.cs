@@ -38,6 +38,7 @@ public class UnitTestRosenbrock
     {
         var functionResult = RosenbrockGradient(a, b, x);
         var expressionResult = RosenbrockGradientExprEval(a, b, x);
+        
         Assert.Equal(functionResult, expressionResult);
     }
 

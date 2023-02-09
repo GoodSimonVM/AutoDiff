@@ -2,7 +2,7 @@
 
 namespace GoodSimonVM.AutoDiffLib.Expressions;
 
-public abstract class UnaryExpr : Expr
+internal abstract class UnaryExpr : Expr
 {
     private readonly string _operatorFormat;
 
@@ -13,7 +13,7 @@ public abstract class UnaryExpr : Expr
         Expr = expr;
     }
 
-    protected Expr Expr { get; }
+    public Expr Expr { get; }
 
     public override string ToString()
     {

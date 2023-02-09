@@ -8,8 +8,8 @@ internal class PowerExpr : BinaryExpr
     {
     }
 
-    private Expr Base => Left;
-    private Expr Power => Right;
+    public Expr Base => Left;
+    public Expr Power => Right;
 
     public override double Evaluate()
     {

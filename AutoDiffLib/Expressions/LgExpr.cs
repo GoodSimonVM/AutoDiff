@@ -11,13 +11,13 @@ internal class LgExpr : LogExpr
 
     public override double Evaluate()
     {
-        var x = A.Evaluate();
+        var x = X.Evaluate();
         return System.Math.Log(x);
     }
 
     public override Expr Derivative(VariableExpr wrt)
     {
-        var a = A;
+        var a = X;
         var da = a.Derivative(wrt);
         var derivative = da / (Ln10 * a);
         return derivative;
