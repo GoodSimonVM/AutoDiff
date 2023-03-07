@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net40;net5;net6;net7</TargetFrameworks>
+        <TargetFrameworks>net40;net5.0;net6.0;net7.0;netstandard2.0;netstandard2.1</TargetFrameworks>
         <Nullable>enable</Nullable>
         <LangVersion>default</LangVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -16,7 +16,9 @@
         <PackageProjectUrl>https://github.com/GoodSimonVM/AutoDiff</PackageProjectUrl>        
         <RepositoryUrl>https://github.com/GoodSimonVM/AutoDiff</RepositoryUrl>        
         <RepositoryType>git</RepositoryType>        
-        <PackageLicenseUrl>https://github.com/GoodSimonVM/AutoDiff/blob/master/LICENSE.txt</PackageLicenseUrl>
+        <PackageLicenseUrl>https://github.com/GoodSimonVM/AutoDiff/blob/master/LICENSE.txt</PackageLicenseUrl>        
+        <Product>GoodSimonVM.AutoDiffLib</Product>        
+        <AssemblyName>GoodSimonVM.AutoDiffLib</AssemblyName>
     </PropertyGroup>
 
 </Project>

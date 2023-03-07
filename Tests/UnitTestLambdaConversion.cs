@@ -32,7 +32,7 @@ public class UnitTestLambdaConversion
         var expected = ExpectedFunction(a, b, x);
         var actualExpr = ExpressionBuilder.Create(
             "x", x.Count,
-            new ConstantExpr[] { a, b },
+            new List<ConstantExpr> { a, b }.AsReadOnly(),
             (constants, variables) =>
             {
                 Expr sum = 0d;

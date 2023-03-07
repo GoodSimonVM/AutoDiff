@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>default</LangVersion>
         <IsPackable>false</IsPackable>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFrameworks>net5.0;net6.0;net7.0;netstandard2.0;netstandard2.1</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>

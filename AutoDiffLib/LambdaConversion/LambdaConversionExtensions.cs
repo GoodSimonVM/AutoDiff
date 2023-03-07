@@ -196,7 +196,6 @@ public static class LambdaConversionExtensions
             }
             case ConstantExpr constantExpr:
             {
-                Expression expression;
                 return Expression.Constant(constantExpr.Value);
             }
             case CosecantExpr cosecantExpr:

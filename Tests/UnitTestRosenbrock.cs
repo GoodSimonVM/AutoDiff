@@ -163,7 +163,7 @@ public class UnitTestRosenbrock
     {
         var rosenbrockExpr = ExpressionBuilder.Create(
             "x", x.Count,
-            new ConstantExpr[] { a, b },
+            new List<ConstantExpr> { a, b }.AsReadOnly(),
             RosenbrockExprBuilder,
             out var variables);
         for (var i = 0; i < variables.Count; i++)
@@ -180,7 +180,7 @@ public class UnitTestRosenbrock
     {
         var rosenbrockExpr = ExpressionBuilder.Create(
             "x", x.Count,
-            new ConstantExpr[] { a, b },
+            new List<ConstantExpr> { a, b }.AsReadOnly(),
             RosenbrockExprBuilder,
             out var variables);
         for (var i = 0; i < variables.Count; i++)
@@ -197,7 +197,7 @@ public class UnitTestRosenbrock
     {
         var rosenbrockExpr = ExpressionBuilder.Create(
             "x", x.Count,
-            new ConstantExpr[] { a, b },
+            new List<ConstantExpr> { a, b }.AsReadOnly(),
             RosenbrockExprBuilder,
             out var variables);
         for (var i = 0; i < variables.Count; i++)
