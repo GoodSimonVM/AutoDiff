@@ -1,5 +1,6 @@
 using GoodSimonVM.AutoDiffLib.Builders;
 using GoodSimonVM.AutoDiffLib.Expressions;
+using GoodSimonVM.AutoDiffLib.LambdaConversion;
 using ADMath = GoodSimonVM.AutoDiffLib.Expressions.Math;
 using Math = System.Math;
 
@@ -27,28 +28,28 @@ public class UnitTestRosenbrock
     [MemberData(nameof(RosenbrockData))]
     public void TestRosenbrockFunction(double a, double b, double[] x)
     {
-        var functionResult = RosenbrockFunction(a, b, x);
-        var expressionResult = RosenbrockExprEval(a, b, x);
-        Assert.Equal(functionResult, expressionResult);
+        var expected = RosenbrockFunction(a, b, x);
+        var actual = RosenbrockExprEval(a, b, x);
+        Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(RosenbrockData))]
     public void TestRosenbrockGradient(double a, double b, double[] x)
     {
-        var functionResult = RosenbrockGradient(a, b, x);
-        var expressionResult = RosenbrockGradientExprEval(a, b, x);
-        
-        Assert.Equal(functionResult, expressionResult);
+        var expected = RosenbrockGradient(a, b, x);
+        var actual = RosenbrockGradientExprEval(a, b, x);
+
+        Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(RosenbrockData))]
     public void TestRosenbrockHessian(double a, double b, double[] x)
     {
-        var functionResult = RosenbrockHess(a, b, x);
-        var expressionResult = RosenbrockHessianExprEval(a, b, x);
-        Assert.Equal(functionResult, expressionResult);
+        var expected = RosenbrockHess(a, b, x);
+        var actual = RosenbrockHessianExprEval(a, b, x);
+        Assert.Equal(expected, actual);
     }
 
     private static double RosenbrockFunction(
