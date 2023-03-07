@@ -40,7 +40,7 @@ public static class ExpressionBuilder
             throw new NotUniqNamesException(variables);
         return func(variables.ToList().AsReadOnly());
     }
-    
+
     public static Expr Create(
         string commonVariableName,
         int count,
@@ -80,7 +80,7 @@ public static class ExpressionBuilder
     private static IEnumerable<string> BuildVariableNames(int count, string commonName)
     {
         return Enumerable.Range(0, count)
-            .Select(i => $"{commonName}{StringUtils.ToSubscript(i.ToString())}")
+            .Select(i => StringUtils.MakeIndexedName(commonName, i))
             .ToArray();
     }
 
