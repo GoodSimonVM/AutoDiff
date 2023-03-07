@@ -91,7 +91,7 @@ public class UnitTestRosenbrock
                 var dxidxk = dx(i, k);
                 var dxjdxk = dx(j, k);
                 var dfa = -2 * (a - xi) * dxidxk;
-                var dfb = 2 * b * (xj - xi * xi) * (dxjdxk - 2 * xi * dxidxk);
+                var dfb = b * (2  * (xj - Math.Pow(xi,2)) * (dxjdxk - 2 * xi * dxidxk));
                 g += dfa + dfb;
             }
 
