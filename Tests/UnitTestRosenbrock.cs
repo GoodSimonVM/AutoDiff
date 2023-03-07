@@ -7,15 +7,24 @@ namespace Tests;
 
 public class UnitTestRosenbrock
 {
+    public static IEnumerable<object[]> RosenbrockData => new List<object[]>
+    {
+        new object[] { 1, 100, new double[] { 1, 1 } },
+        new object[] { 1, 100, new double[] { 1, 1, 1 } },
+        new object[] { 1, 0.1, new double[] { 10, 10 } },
+        new object[] { 1, 0.1, new double[] { 10, 10, 10 } },
+        new object[] { 1, 0.1, new double[] { 10, 10, 10, 10 } },
+        new object[] { 1, 0.1, new double[] { 10, 10, 10, 10, 10 } },
+        new object[] { 1, 0.1, new double[] { 1456, 453 } },
+        new object[] { 1, 0.1, new double[] { 1456, 453, 555 } },
+        new object[] { 1, 0.1, new double[] { 111, 222 } },
+        new object[] { 1, 0.1, new double[] { 111, 222, 333 } },
+        new object[] { 1, 0.1, new double[] { 111, 222, 333, 444 } },
+        new object[] { 1, 0.1, new double[] { 111, 222, 333, 444, 555 } },
+    };
+
     [Theory]
-    [InlineData(1, 100, new double[] {1, 1})]
-    [InlineData(1, 100, new double[] {1, 1, 1})]
-    [InlineData(1, 0.1, new double[] {10, 10})]
-    [InlineData(1, 0.1, new double[] {10, 10, 10})]
-    [InlineData(1, 0.1, new double[] {10, 10, 10, 10})]
-    [InlineData(1, 0.1, new double[] {10, 10, 10, 10, 10})]
-    [InlineData(1, 0.1, new double[] {1456, 453})]
-    [InlineData(1, 0.1, new double[] {1456, 453, 555})]
+    [MemberData(nameof(RosenbrockData))]
     public void TestRosenbrockFunction(double a, double b, double[] x)
     {
         var functionResult = RosenbrockFunction(a, b, x);
@@ -24,16 +33,7 @@ public class UnitTestRosenbrock
     }
 
     [Theory]
-    [InlineData(1, 100, new double[] {1, 1})]
-    [InlineData(1, 100, new double[] {1, 1, 1})]
-    [InlineData(1, 0.1, new double[] {10, 10})]
-    [InlineData(1, 0.1, new double[] {10, 10, 10})]
-    [InlineData(1, 0.1, new double[] {10, 10, 10, 10})]
-    [InlineData(1, 0.1, new double[] {10, 10, 10, 10, 10})]
-    [InlineData(1, 0.1, new double[] {111, 222})]
-    [InlineData(1, 0.1, new double[] {111, 222, 333})]
-    [InlineData(1, 0.1, new double[] {111, 222, 333, 444})]
-    [InlineData(1, 0.1, new double[] {111, 222, 333, 444, 555})]
+    [MemberData(nameof(RosenbrockData))]
     public void TestRosenbrockGradient(double a, double b, double[] x)
     {
         var functionResult = RosenbrockGradient(a, b, x);
@@ -43,14 +43,7 @@ public class UnitTestRosenbrock
     }
 
     [Theory]
-    [InlineData(1, 100, new double[] {1, 1})]
-    [InlineData(1, 100, new double[] {1, 1, 1})]
-    [InlineData(1, 0.1, new double[] {10, 10})]
-    [InlineData(1, 0.1, new double[] {10, 10, 10})]
-    [InlineData(1, 0.1, new double[] {10, 10, 10, 10})]
-    [InlineData(1, 0.1, new double[] {10, 10, 10, 10, 10})]
-    [InlineData(1, 0.1, new double[] {1456, 453})]
-    [InlineData(1, 0.1, new double[] {1456, 453, 555})]
+    [MemberData(nameof(RosenbrockData))]
     public void TestRosenbrockHessian(double a, double b, double[] x)
     {
         var functionResult = RosenbrockHess(a, b, x);
@@ -169,7 +162,7 @@ public class UnitTestRosenbrock
     {
         var rosenbrockExpr = ExpressionBuilder.Create(
             "x", x.Count,
-            new ConstantExpr[] {a, b},
+            new ConstantExpr[] { a, b },
             RosenbrockExprBuilder,
             out var variables);
         for (var i = 0; i < variables.Count; i++)
@@ -186,7 +179,7 @@ public class UnitTestRosenbrock
     {
         var rosenbrockExpr = ExpressionBuilder.Create(
             "x", x.Count,
-            new ConstantExpr[] {a, b},
+            new ConstantExpr[] { a, b },
             RosenbrockExprBuilder,
             out var variables);
         for (var i = 0; i < variables.Count; i++)
@@ -203,7 +196,7 @@ public class UnitTestRosenbrock
     {
         var rosenbrockExpr = ExpressionBuilder.Create(
             "x", x.Count,
-            new ConstantExpr[] {a, b},
+            new ConstantExpr[] { a, b },
             RosenbrockExprBuilder,
             out var variables);
         for (var i = 0; i < variables.Count; i++)
