@@ -58,4 +58,30 @@ public static class ExprExtensions
 
         return hessian.AsReadOnly();
     }
+
+    public static void GradAndHess(
+        this Expr expr,
+        out ReadOnlyCollectionOfExpressions gradient,
+        out ReadOnlyCollectionOfReadOnlyCollectionOfExpressions hessian)
+    {
+        var vars = expr.GetVariables();
+        var grad = new List<Expr>();
+        var hess = new List<ReadOnlyCollection<Expr>>();
+        foreach (var var1 in vars)
+        {
+            var grad_i = expr.Derivative(var1);
+            grad.Add(grad_i);
+            var hessRow = new List<Expr>();
+            foreach (var var2 in vars)
+            {
+                var hess_ij = grad_i.Derivative(var2);
+                hessRow.Add(hess_ij);
+            }
+
+            hess.Add(hessRow.AsReadOnly());
+        }
+
+        gradient = grad.AsReadOnly();
+        hessian = hess.AsReadOnly();
+    }
 }
