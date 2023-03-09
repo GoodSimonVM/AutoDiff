@@ -12,11 +12,11 @@ public static class ExpressionBuilder
     public static Expr Create(
         string commonVariableName,
         int count,
-        Func<ReadOnlyCollectionOfVariables, Expr> expr,
+        Func<ReadOnlyCollectionOfVariables, Expr> func,
         out ReadOnlyCollectionOfVariables vars)
     {
         var names = BuildVariableNames(count, commonVariableName);
-        return Create(names, expr, out vars);
+        return Create(names, func, out vars);
     }
 
     public static Expr Create(
