@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace GoodSimonVM.AutoDiffLib.Expressions;
 
@@ -41,7 +42,7 @@ public static class ExprExtensions
     public static ReadOnlyCollectionOfReadOnlyCollectionOfExpressions Hess(this Expr expr)
     {
         var vars = expr.GetVariables();
-        var d1s = new List<ReadOnlyCollection<Expr>>();
+        var hessian = new List<ReadOnlyCollection<Expr>>();
         foreach (var var1 in vars)
         {
             var d1 = expr.Derivative(var1);
@@ -52,9 +53,9 @@ public static class ExprExtensions
                 d2s.Add(d2);
             }
 
-            d1s.Add(d2s.AsReadOnly());
+            hessian.Add(d2s.AsReadOnly());
         }
 
-        return d1s.AsReadOnly();
+        return hessian.AsReadOnly();
     }
 }
