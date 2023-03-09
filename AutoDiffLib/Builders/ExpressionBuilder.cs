@@ -91,4 +91,9 @@ public static class ExpressionBuilder
             .ToList()
             .AsReadOnly();
     }
+    
+    public static ReadOnlyCollectionOfVariables BuildVariables(string commonName, int count)
+    {
+        return BuildVariables(BuildVariableNames(count, commonName));
+    }
 }
