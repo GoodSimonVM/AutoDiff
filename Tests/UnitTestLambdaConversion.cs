@@ -97,4 +97,19 @@ public class UnitTestLambdaConversion
 
         return sum;
     }
+
+    [Fact]
+    public static void TestTypeConversion()
+    {
+        var expr = ExpressionBuilder.Create(new[] { "x", "y" }, vars =>
+        {
+            var x = vars[0];
+            var y = vars[1];
+            return ADMath.Sgn(x) * y;
+        }, out var vars);
+        var lambda = expr.ConvertToLambda(new ConvertOptions
+            { ParameterRule = ParameterConversionRule.GroupInArrayByName });
+        var @delegate = lambda.Compile();
+        return;
+    }
 }

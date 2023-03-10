@@ -122,33 +122,38 @@ public static class LambdaConversionExtensions
         ConvertOptions options
     )
     {
+        Expression resultExpression;
         switch (expr)
         {
             case AddExpr addExpr:
             {
                 var l = addExpr.Left.ConvertBody(variableParameterInfos, options);
                 var r = addExpr.Right.ConvertBody(variableParameterInfos, options);
-                return Expression.Add(l, r);
+                resultExpression = Expression.Add(l, r);
+                break;
             }
             case DivExpr divExpr:
             {
                 var l = divExpr.Left.ConvertBody(variableParameterInfos, options);
                 var r = divExpr.Right.ConvertBody(variableParameterInfos, options);
-                return Expression.Divide(l, r);
+                resultExpression = Expression.Divide(l, r);
+                break;
             }
             case LgExpr lgExpr:
             {
                 Func<double, double> m = System.Math.Log10;
                 var mi = m.Method;
                 var xExpression = lgExpr.X.ConvertBody(variableParameterInfos, options);
-                return Expression.Call(mi, xExpression);
+                resultExpression = Expression.Call(mi, xExpression);
+                break;
             }
             case LnExpr lnExpr:
             {
                 Func<double, double> m = System.Math.Log;
                 var mi = m.Method;
                 var xExpression = lnExpr.X.ConvertBody(variableParameterInfos, options);
-                return Expression.Call(mi, xExpression);
+                resultExpression = Expression.Call(mi, xExpression);
+                break;
             }
             case LogExpr logExpr:
             {
@@ -157,18 +162,21 @@ public static class LambdaConversionExtensions
                 var xExpression = logExpr.X.ConvertBody(variableParameterInfos, options);
                 var baseExpression =
                     logExpr.Base.ConvertBody(variableParameterInfos, options);
-                return Expression.Call(mi, xExpression, baseExpression);
+                resultExpression = Expression.Call(mi, xExpression, baseExpression);
+                break;
             }
             case MinusExpr minusExpr:
             {
                 var ne = minusExpr.Right.ConvertBody(variableParameterInfos, options);
-                return Expression.Negate(ne);
+                resultExpression = Expression.Negate(ne);
+                break;
             }
             case MulExpr mulExpr:
             {
                 var l = mulExpr.Left.ConvertBody(variableParameterInfos, options);
                 var r = mulExpr.Right.ConvertBody(variableParameterInfos, options);
-                return Expression.Multiply(l, r);
+                resultExpression = Expression.Multiply(l, r);
+                break;
             }
             case PowerExpr powerExpr:
             {
@@ -178,13 +186,15 @@ public static class LambdaConversionExtensions
                     powerExpr.Base.ConvertBody(variableParameterInfos, options);
                 var powerExpression =
                     powerExpr.Power.ConvertBody(variableParameterInfos, options);
-                return Expression.Call(mi, baseExpression, powerExpression);
+                resultExpression = Expression.Call(mi, baseExpression, powerExpression);
+                break;
             }
             case SubExpr subExpr:
             {
                 var l = subExpr.Left.ConvertBody(variableParameterInfos, options);
                 var r = subExpr.Right.ConvertBody(variableParameterInfos, options);
-                return Expression.Subtract(l, r);
+                resultExpression = Expression.Subtract(l, r);
+                break;
             }
             case AbsExpr absExpr:
             {
@@ -192,11 +202,13 @@ public static class LambdaConversionExtensions
                 var mi = m.Method;
                 var argumentExpression =
                     absExpr.Expr.ConvertBody(variableParameterInfos, options);
-                return Expression.Call(mi, argumentExpression);
+                resultExpression = Expression.Call(mi, argumentExpression);
+                break;
             }
             case ConstantExpr constantExpr:
             {
-                return Expression.Constant(constantExpr.Value);
+                resultExpression = Expression.Constant(constantExpr.Value);
+                break;
             }
             case CosecantExpr cosecantExpr:
             {
@@ -204,7 +216,8 @@ public static class LambdaConversionExtensions
                 var mi = m.Method;
                 var expressionArgument =
                     cosecantExpr.Expr.ConvertBody(variableParameterInfos, options);
-                return Expression.Divide(Expression.Constant(1), Expression.Call(mi, expressionArgument));
+                resultExpression = Expression.Divide(Expression.Constant(1), Expression.Call(mi, expressionArgument));
+                break;
             }
             case CosExpr cosExpr:
             {
@@ -212,7 +225,8 @@ public static class LambdaConversionExtensions
                 var mi = m.Method;
                 var expressionArgument =
                     cosExpr.Expr.ConvertBody(variableParameterInfos, options);
-                return Expression.Call(mi, expressionArgument);
+                resultExpression = Expression.Call(mi, expressionArgument);
+                break;
             }
             case CotExpr cotExpr:
             {
@@ -220,12 +234,14 @@ public static class LambdaConversionExtensions
                 var mi = m.Method;
                 var expressionArgument =
                     cotExpr.Expr.ConvertBody(variableParameterInfos, options);
-                return Expression.Divide(Expression.Constant(1), Expression.Call(mi, expressionArgument));
+                resultExpression = Expression.Divide(Expression.Constant(1), Expression.Call(mi, expressionArgument));
+                break;
             }
             case PlusExpr plusExpr:
             {
                 var pExpr = plusExpr.Expr.ConvertBody(variableParameterInfos, options);
-                return Expression.UnaryPlus(pExpr);
+                resultExpression = Expression.UnaryPlus(pExpr);
+                break;
             }
             case SecantExpr secantExpr:
             {
@@ -233,7 +249,8 @@ public static class LambdaConversionExtensions
                 var mi = m.Method;
                 var expressionArgument =
                     secantExpr.Expr.ConvertBody(variableParameterInfos, options);
-                return Expression.Divide(Expression.Constant(1), Expression.Call(mi, expressionArgument));
+                resultExpression = Expression.Divide(Expression.Constant(1), Expression.Call(mi, expressionArgument));
+                break;
             }
             case SignExpr signExpr:
             {
@@ -242,7 +259,8 @@ public static class LambdaConversionExtensions
                 var xExpression =
                     signExpr.Expr.ConvertBody(variableParameterInfos, options);
                 xExpression = Expression.Convert(xExpression, typeof(double));
-                return Expression.Call(mi, xExpression);
+                resultExpression = Expression.Call(mi, xExpression);
+                break;
             }
             case SinExpr sinExpr:
             {
@@ -250,7 +268,8 @@ public static class LambdaConversionExtensions
                 var mi = m.Method;
                 var expressionArgument =
                     sinExpr.Expr.ConvertBody(variableParameterInfos, options);
-                return Expression.Call(mi, expressionArgument);
+                resultExpression = Expression.Call(mi, expressionArgument);
+                break;
             }
             case TanExpr tanExpr:
             {
@@ -258,17 +277,24 @@ public static class LambdaConversionExtensions
                 var mi = m.Method;
                 var expressionArgument =
                     tanExpr.Expr.ConvertBody(variableParameterInfos, options);
-                return Expression.Call(mi, expressionArgument);
+                resultExpression = Expression.Call(mi, expressionArgument);
+                break;
             }
             case VariableExpr variableExpr:
             {
                 var variableExprName = variableExpr.Name;
-                return variableParameterInfos.Single(parameter =>
+                resultExpression = variableParameterInfos.Single(parameter =>
                     parameter.Name.Equals(variableExprName, StringComparison.InvariantCulture)).AccessExpression;
+                break;
             }
             default:
                 throw new ArgumentOutOfRangeException(nameof(expr));
         }
+
+        if (resultExpression.Type != typeof(double))
+            resultExpression = Expression.ConvertChecked(resultExpression, typeof(double));
+
+        return resultExpression;
     }
 
     private static ParameterExpression Convert(this VariableExpr expr)

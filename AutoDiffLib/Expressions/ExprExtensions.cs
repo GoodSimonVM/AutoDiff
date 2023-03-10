@@ -84,4 +84,9 @@ public static class ExprExtensions
         gradient = grad.AsReadOnly();
         hessian = hess.AsReadOnly();
     }
+
+    public static Expr Sum(this IEnumerable<Expr> enumerable)
+    {
+        return enumerable.Aggregate((expr, expr1) => expr + expr1);
+    }
 }
