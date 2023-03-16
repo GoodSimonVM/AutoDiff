@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using GoodSimonVM.AutoDiffLib.Expressions;
 using GoodSimonVM.AutoDiffLib.Utils;
 using ADMath = GoodSimonVM.AutoDiffLib.Expressions.Math;
+using Math = System.Math;
 
 #if NET5_0_OR_GREATER
 using ReadOnlyCollectionOfVariableParameterInfos =
@@ -173,9 +174,25 @@ public static class LambdaConversionExtensions
             }
             case MulExpr mulExpr:
             {
-                var l = mulExpr.Left.ConvertBody(variableParameterInfos, options);
-                var r = mulExpr.Right.ConvertBody(variableParameterInfos, options);
-                resultExpression = Expression.Multiply(l, r);
+                var re = mulExpr.Right;
+                var le = mulExpr.Left;
+                if (le is ConstantExpr cle && Math.Abs(cle.Value - (-1)) < double.Epsilon)
+                {
+                    var r = re.ConvertBody(variableParameterInfos, options);
+                    resultExpression = Expression.Negate(r);
+                }
+                else if (re is ConstantExpr rle && Math.Abs(rle.Value - (-1)) < double.Epsilon)
+                {
+                    var l = le.ConvertBody(variableParameterInfos, options);
+                    resultExpression = Expression.Negate(l);
+                }
+                else
+                {
+                    var l = le.ConvertBody(variableParameterInfos, options);
+                    var r = re.ConvertBody(variableParameterInfos, options);
+                    resultExpression = Expression.Multiply(l, r);
+                }
+
                 break;
             }
             case PowerExpr powerExpr:
@@ -292,7 +309,7 @@ public static class LambdaConversionExtensions
         }
 
         if (resultExpression.Type != typeof(double))
-            resultExpression = Expression.ConvertChecked(resultExpression, typeof(double));
+            resultExpression = Expression.Convert(resultExpression, typeof(double));
 
         return resultExpression;
     }
