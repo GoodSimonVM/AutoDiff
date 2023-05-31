@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace GoodSimonVM.AutoDiffLib.Expressions;
 
@@ -28,8 +29,13 @@ public static class ExprExtensions
     public static ReadOnlyCollectionOfExpressions Grad(this Expr expr)
     {
         var vars = expr.GetVariables();
+        return expr.Grad(vars);
+    }
+
+    public static ReadOnlyCollectionOfExpressions Grad(this Expr expr, IEnumerable<VariableExpr> wrts)
+    {
         var derivatives = new List<Expr>();
-        foreach (var var in vars)
+        foreach (var var in wrts)
         {
             var derivative = expr.Derivative(var);
             derivatives.Add(derivative);
@@ -41,20 +47,58 @@ public static class ExprExtensions
     public static ReadOnlyCollectionOfReadOnlyCollectionOfExpressions Hess(this Expr expr)
     {
         var vars = expr.GetVariables();
-        var d1s = new List<ReadOnlyCollection<Expr>>();
-        foreach (var var1 in vars)
+        return expr.Hess(vars);
+    }
+
+    public static ReadOnlyCollectionOfReadOnlyCollectionOfExpressions Hess(
+        this Expr expr,
+        IEnumerable<VariableExpr> wrts)
+    {
+        var hessian = new List<ReadOnlyCollection<Expr>>();
+        foreach (var var1 in wrts)
         {
             var d1 = expr.Derivative(var1);
             var d2s = new List<Expr>();
-            foreach (var var2 in vars)
+            foreach (var var2 in wrts)
             {
                 var d2 = d1.Derivative(var2);
                 d2s.Add(d2);
             }
 
-            d1s.Add(d2s.AsReadOnly());
+            hessian.Add(d2s.AsReadOnly());
         }
 
-        return d1s.AsReadOnly();
+        return hessian.AsReadOnly();
+    }
+
+    public static void GradAndHess(
+        this Expr expr,
+        out ReadOnlyCollectionOfExpressions gradient,
+        out ReadOnlyCollectionOfReadOnlyCollectionOfExpressions hessian)
+    {
+        var vars = expr.GetVariables();
+        var grad = new List<Expr>();
+        var hess = new List<ReadOnlyCollection<Expr>>();
+        foreach (var var1 in vars)
+        {
+            var grad_i = expr.Derivative(var1);
+            grad.Add(grad_i);
+            var hessRow = new List<Expr>();
+            foreach (var var2 in vars)
+            {
+                var hess_ij = grad_i.Derivative(var2);
+                hessRow.Add(hess_ij);
+            }
+
+            hess.Add(hessRow.AsReadOnly());
+        }
+
+        gradient = grad.AsReadOnly();
+        hessian = hess.AsReadOnly();
+    }
+
+    public static Expr Sum(this IEnumerable<Expr> enumerable)
+    {
+        return enumerable.Aggregate((expr, expr1) => expr + expr1);
     }
 }

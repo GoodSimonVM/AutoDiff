@@ -12,11 +12,11 @@ public static class ExpressionBuilder
     public static Expr Create(
         string commonVariableName,
         int count,
-        Func<ReadOnlyCollectionOfVariables, Expr> expr,
+        Func<ReadOnlyCollectionOfVariables, Expr> func,
         out ReadOnlyCollectionOfVariables vars)
     {
         var names = BuildVariableNames(count, commonVariableName);
-        return Create(names, expr, out vars);
+        return Create(names, func, out vars);
     }
 
     public static Expr Create(
@@ -40,7 +40,7 @@ public static class ExpressionBuilder
             throw new NotUniqNamesException(variables);
         return func(variables.ToList().AsReadOnly());
     }
-    
+
     public static Expr Create(
         string commonVariableName,
         int count,
@@ -80,15 +80,25 @@ public static class ExpressionBuilder
     private static IEnumerable<string> BuildVariableNames(int count, string commonName)
     {
         return Enumerable.Range(0, count)
-            .Select(i => $"{commonName}{StringUtils.ToSubscript(i.ToString())}")
+            .Select(i => StringUtils.MakeIndexedName(commonName, i))
             .ToArray();
     }
 
     private static ReadOnlyCollectionOfVariables BuildVariables(IEnumerable<string> names)
     {
         return names
-            .Select(n => new VariableExpr(n))
+            .Select(BuildVariable)
             .ToList()
             .AsReadOnly();
+    }
+
+    public static ReadOnlyCollectionOfVariables BuildVariables(string commonName, int count)
+    {
+        return BuildVariables(BuildVariableNames(count, commonName));
+    }
+
+    public static VariableExpr BuildVariable(string name)
+    {
+        return new VariableExpr(name);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using GoodSimonVM.AutoDiffLib.Exceptions;
 
 namespace GoodSimonVM.AutoDiffLib.Utils;
@@ -125,6 +126,59 @@ internal static class StringUtils
         return ch;
     }
 
+    public static readonly IEnumerable<char> SubscriptChars = new[]
+    {
+        '\u2080',
+        '\u2081',
+        '\u2082',
+        '\u2083',
+        '\u2084',
+        '\u2085',
+        '\u2086',
+        '\u2087',
+        '\u2088',
+        '\u2089',
+        '\u208a',
+        '\u208b',
+        '\u208c',
+        '\u208d',
+        '\u208e',
+        '\u2090',
+        '\u2091',
+        '\u2092',
+        '\u2093',
+        '\u2094',
+        '\u2095',
+        '\u2096',
+        '\u2097',
+        '\u2098',
+        '\u2099',
+        '\u209a',
+        '\u209b',
+        '\u209c',
+    };
+
+    public static readonly IEnumerable<char> SuperscriptChars = new[]
+    {
+        '\u2071',
+        '\u2070',
+        '\u00b9',
+        '\u00b2',
+        '\u00b3',
+        '\u2074',
+        '\u2075',
+        '\u2076',
+        '\u2077',
+        '\u2078',
+        '\u2079',
+        '\u207a',
+        '\u207b',
+        '\u207c',
+        '\u207d',
+        '\u207e',
+        '\u207f',
+    };
+
     public static string ToSuperscript(string str)
     {
         return new string(str.Select(ToSuperscript).ToArray());
@@ -138,5 +192,26 @@ internal static class StringUtils
     public static string ToNormal(string str)
     {
         return new string(str.Select(ToNormal).ToArray());
+    }
+
+    public static string MakeIndexedName(string commonName, int index)
+    {
+        return $"{commonName}{StringUtils.ToSubscript(index.ToString())}";
+    }
+
+    public static bool TryParseIndexedName(string name, out string commonName, out int index)
+    {
+        var firstSubscriptIndex = name.IndexOfAny(StringUtils.SubscriptChars.ToArray());
+        if (firstSubscriptIndex < 0)
+        {
+            commonName = null!;
+            index = 0;
+            return false;
+        }
+
+        commonName = name.Substring(0, firstSubscriptIndex);
+        var indexStr = name.Substring(firstSubscriptIndex, name.Length - firstSubscriptIndex);
+        indexStr = ToNormal(indexStr);
+        return int.TryParse(indexStr, out index);
     }
 }

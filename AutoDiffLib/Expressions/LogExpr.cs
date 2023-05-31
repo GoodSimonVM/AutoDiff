@@ -1,10 +1,12 @@
-﻿namespace GoodSimonVM.AutoDiffLib.Expressions;
+﻿using System.Collections.Generic;
+
+namespace GoodSimonVM.AutoDiffLib.Expressions;
 
 internal class LogExpr : BinaryExpr
 {
     private const string OperatorFormat = "log{1}({0})";
 
-    protected LogExpr(string operatorFormat, Expr x, Expr n) : base(operatorFormat, x, n)
+    protected LogExpr(string operatorFormat, Expr x, Expr @base) : base(operatorFormat, x, @base)
     {
     }
 
@@ -12,21 +14,21 @@ internal class LogExpr : BinaryExpr
     {
     }
 
-    protected Expr A => Left;
-    protected Expr B => Right;
+    public Expr X => Left;
+    public Expr Base => Right;
 
-    public override double Evaluate()
+    public override double Evaluate(IDictionary<string, double> values)
     {
-        var a = A.Evaluate();
-        var b = B.Evaluate();
+        var a = X.Evaluate(values);
+        var b = Base.Evaluate(values);
         var res = System.Math.Log(a, b);
         return res;
     }
 
     public override Expr Derivative(VariableExpr wrt)
     {
-        var a = A;
-        var b = B;
+        var a = X;
+        var b = Base;
         var lna = Math.Ln(a);
         var lnb = Math.Ln(b);
         var da = a.Derivative(wrt);

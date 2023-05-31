@@ -1,4 +1,6 @@
-﻿namespace GoodSimonVM.AutoDiffLib.Expressions;
+﻿using System.Collections.Generic;
+
+namespace GoodSimonVM.AutoDiffLib.Expressions;
 
 internal class AbsExpr : UnaryExpr
 {
@@ -8,9 +10,9 @@ internal class AbsExpr : UnaryExpr
     {
     }
 
-    public override double Evaluate()
+    public override double Evaluate(IDictionary<string, double> values)
     {
-        var x = Expr.Evaluate();
+        var x = Expr.Evaluate(values);
         var abs = System.Math.Abs(x);
         return abs;
     }

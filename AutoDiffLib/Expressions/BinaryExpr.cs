@@ -2,7 +2,7 @@
 
 namespace GoodSimonVM.AutoDiffLib.Expressions;
 
-public abstract class BinaryExpr : Expr
+internal abstract class BinaryExpr : Expr
 {
     private readonly string _operatorFormat;
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using GoodSimonVM.AutoDiffLib.Exceptions;
 
 namespace GoodSimonVM.AutoDiffLib.Expressions;
 
@@ -12,11 +14,11 @@ public class VariableExpr : Expr
 
     public string Name { get; }
 
-    public double Value { get; set; }
-
-    public override double Evaluate()
+    public override double Evaluate(IDictionary<string, double> values)
     {
-        return Value;
+        if (values.TryGetValue(Name, out var value))
+            return value;
+        throw new ArgumentNotFound(Name);
     }
 
     public override Expr Derivative(VariableExpr wrt)

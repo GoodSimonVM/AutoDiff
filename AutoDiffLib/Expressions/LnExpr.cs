@@ -1,4 +1,6 @@
-﻿namespace GoodSimonVM.AutoDiffLib.Expressions;
+﻿using System.Collections.Generic;
+
+namespace GoodSimonVM.AutoDiffLib.Expressions;
 
 internal class LnExpr : LogExpr
 {
@@ -8,15 +10,15 @@ internal class LnExpr : LogExpr
     {
     }
 
-    public override double Evaluate()
+    public override double Evaluate(IDictionary<string, double> values)
     {
-        var x = A.Evaluate();
+        var x = X.Evaluate(values);
         return System.Math.Log(x);
     }
 
     public override Expr Derivative(VariableExpr wrt)
     {
-        var a = A;
+        var a = X;
         var da = a.Derivative(wrt);
         var derivative = da / a;
         return derivative;

@@ -35,45 +35,58 @@ public abstract class Expr
     public ReadOnlyCollectionOfVariables GetVariables()
     {
         var set = new HashSet<VariableExpr>();
-        GetVariables(ref set);
+        GetVariables(set);
         return set.ToList().AsReadOnly();
     }
 
-    private void GetVariables(ref HashSet<VariableExpr> set)
+    private void GetVariables(HashSet<VariableExpr> set)
     {
-        if (SubExpressions == null) return;
-        foreach (var subExpression in SubExpressions)
-            if (subExpression is VariableExpr indep)
-                set.Add(indep);
-            else
-                subExpression.GetVariables(ref set);
+        if (this is VariableExpr variableExpr)
+            set.Add(variableExpr);
+        else if (SubExpressions is not null)
+            foreach (var subExpression in SubExpressions)
+                subExpression.GetVariables(set);
     }
 
-    public abstract double Evaluate();
+    public abstract double Evaluate(IDictionary<string, double> values);
     public abstract Expr Derivative(VariableExpr wrt);
+
+    /*public Expr ReplaceVariable(Dictionary<VariableExpr, Expr> values)
+    {
+        if (this is VariableExpr variableExpr && values.TryGetValue(variableExpr, out var newExpr))
+            return newExpr;
+        if (SubExpressions == null) return this;
+
+        for (var i = 0; i < SubExpressions.Count; i++)
+        {
+            var expr = SubExpressions[i];
+            newExpr = expr.ReplaceVariable(values);
+            if (newExpr != expr)
+            {
+            }
+        }
+    }*/
+
+    private static ConstantExpr? SimplifyIfConst(Expr l, Expr r)
+    {
+        if (l is not ConstantExpr cl || r is not ConstantExpr cr) return null;
+        var res = cl.Value + cr.Value;
+        return res;
+    }
 
     public static Expr operator +(Expr l, Expr r)
     {
-        if (l is ConstantExpr && r is ConstantExpr)
-        {
-            var res = l.Evaluate() + r.Evaluate();
-            return res;
-        }
-
+        var expr = SimplifyIfConst(l, r);
+        if (expr != null) return expr;
         if (l is ConstantExpr cl && cl.IsZero()) return r;
-
         if (r is ConstantExpr cr && cr.IsZero()) return l;
-
         return new AddExpr(l, r);
     }
 
     public static Expr operator -(Expr l, Expr r)
     {
-        if (l is ConstantExpr && r is ConstantExpr)
-        {
-            var res = l.Evaluate() - r.Evaluate();
-            return res;
-        }
+        var expr = SimplifyIfConst(l, -r);
+        if (expr != null) return expr;
 
         if (l is ConstantExpr cl && cl.IsZero()) return -r;
 
@@ -89,6 +102,8 @@ public abstract class Expr
 
     public static Expr operator -(Expr e)
     {
+        if (e is ConstantExpr ce)
+            return (-ce.Value);
         return new MinusExpr(e);
     }
 
@@ -101,7 +116,7 @@ public abstract class Expr
             return l.Pow(2);
 
         if (cl != null && cr != null)
-            return l.Evaluate() * r.Evaluate();
+            return cl.Value * cr.Value;
 
         if ((cl != null && cl.IsZero()) ||
             (cr != null && cr.IsZero()))
@@ -131,12 +146,12 @@ public abstract class Expr
             {
                 case MulExpr or DivExpr when be.Left is ConstantExpr bcl:
                 {
-                    var c = ce.Evaluate() * bcl.Evaluate();
+                    var c = ce.Value * bcl.Value;
                     return c * be.Right;
                 }
                 case MulExpr when be.Right is ConstantExpr bcr:
                 {
-                    var c = ce.Evaluate() * bcr.Evaluate();
+                    var c = ce.Value * bcr.Value;
                     return c * be.Left;
                 }
             }
@@ -150,7 +165,7 @@ public abstract class Expr
 
         if (cDi != null && divisor is ConstantExpr cDr)
         {
-            var res = cDi.Evaluate() / cDr.Evaluate();
+            var res = cDi.Value / cDr.Value;
             return res;
         }
 
