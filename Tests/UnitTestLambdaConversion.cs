@@ -70,9 +70,7 @@ public class UnitTestLambdaConversion
         var actualExpr = ExpressionBuilder.Create(
             "x", x.Count,
             new List<ConstantExpr> {a, b}.AsReadOnly(),
-            (constants,
-                    variables)
-                =>
+            (constants, variables) =>
             {
                 Expr sum = 0d;
                 var a = constants[0]!;
