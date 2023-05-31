@@ -87,13 +87,18 @@ public static class ExpressionBuilder
     private static ReadOnlyCollectionOfVariables BuildVariables(IEnumerable<string> names)
     {
         return names
-            .Select(n => new VariableExpr(n))
+            .Select(BuildVariable)
             .ToList()
             .AsReadOnly();
     }
-    
+
     public static ReadOnlyCollectionOfVariables BuildVariables(string commonName, int count)
     {
         return BuildVariables(BuildVariableNames(count, commonName));
+    }
+
+    public static VariableExpr BuildVariable(string name)
+    {
+        return new VariableExpr(name);
     }
 }

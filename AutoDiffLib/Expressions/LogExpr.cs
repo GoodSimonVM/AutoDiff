@@ -1,4 +1,6 @@
-﻿namespace GoodSimonVM.AutoDiffLib.Expressions;
+﻿using System.Collections.Generic;
+
+namespace GoodSimonVM.AutoDiffLib.Expressions;
 
 internal class LogExpr : BinaryExpr
 {
@@ -15,10 +17,10 @@ internal class LogExpr : BinaryExpr
     public Expr X => Left;
     public Expr Base => Right;
 
-    public override double Evaluate()
+    public override double Evaluate(IDictionary<string, double> values)
     {
-        var a = X.Evaluate();
-        var b = Base.Evaluate();
+        var a = X.Evaluate(values);
+        var b = Base.Evaluate(values);
         var res = System.Math.Log(a, b);
         return res;
     }

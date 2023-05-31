@@ -53,3 +53,14 @@ public class NotUniqNamesException : AutoDiffException
         return string.Format(ExceptionMessage, equalNames);
     }
 }
+
+public class ArgumentNotFound : AutoDiffException
+{
+    private const string ExceptionMessage =
+        "The value of the variable '{0}' is not set.";
+
+    public ArgumentNotFound(string variableName)
+        : base(string.Format(ExceptionMessage, variableName), null)
+    {
+    }
+}

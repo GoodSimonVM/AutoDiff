@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GoodSimonVM.AutoDiffLib.Expressions;
 
@@ -22,7 +23,7 @@ public class ConstantExpr : Expr
         return new ConstantExpr(value);
     }
 
-    public override double Evaluate()
+    public override double Evaluate(IDictionary<string, double> values)
     {
         return Value;
     }

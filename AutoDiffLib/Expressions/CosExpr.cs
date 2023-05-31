@@ -1,4 +1,6 @@
-﻿namespace GoodSimonVM.AutoDiffLib.Expressions;
+﻿using System.Collections.Generic;
+
+namespace GoodSimonVM.AutoDiffLib.Expressions;
 
 internal class CosExpr : UnaryExpr
 {
@@ -8,9 +10,9 @@ internal class CosExpr : UnaryExpr
     {
     }
 
-    public override double Evaluate()
+    public override double Evaluate(IDictionary<string, double> values)
     {
-        var e = Expr.Evaluate();
+        var e = Expr.Evaluate(values);
         var res = System.Math.Cos(e);
         return res;
     }

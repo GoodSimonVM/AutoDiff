@@ -1,4 +1,6 @@
-﻿namespace GoodSimonVM.AutoDiffLib.Expressions;
+﻿using System.Collections.Generic;
+
+namespace GoodSimonVM.AutoDiffLib.Expressions;
 
 internal class CotExpr : UnaryExpr
 {
@@ -8,9 +10,9 @@ internal class CotExpr : UnaryExpr
     {
     }
 
-    public override double Evaluate()
+    public override double Evaluate(IDictionary<string, double> values)
     {
-        var e = Expr.Evaluate();
+        var e = Expr.Evaluate(values);
         var res = 1 / System.Math.Tan(e);
         return res;
     }

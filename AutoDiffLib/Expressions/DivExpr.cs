@@ -1,4 +1,6 @@
-﻿namespace GoodSimonVM.AutoDiffLib.Expressions;
+﻿using System.Collections.Generic;
+
+namespace GoodSimonVM.AutoDiffLib.Expressions;
 
 internal class DivExpr : BinaryExpr
 {
@@ -8,10 +10,10 @@ internal class DivExpr : BinaryExpr
     {
     }
 
-    public override double Evaluate()
+    public override double Evaluate(IDictionary<string, double> values)
     {
-        var l = Left.Evaluate();
-        var r = Right.Evaluate();
+        var l = Left.Evaluate(values);
+        var r = Right.Evaluate(values);
         var res = l / r;
         return res;
     }

@@ -29,8 +29,13 @@ public static class ExprExtensions
     public static ReadOnlyCollectionOfExpressions Grad(this Expr expr)
     {
         var vars = expr.GetVariables();
+        return expr.Grad(vars);
+    }
+
+    public static ReadOnlyCollectionOfExpressions Grad(this Expr expr, IEnumerable<VariableExpr> wrts)
+    {
         var derivatives = new List<Expr>();
-        foreach (var var in vars)
+        foreach (var var in wrts)
         {
             var derivative = expr.Derivative(var);
             derivatives.Add(derivative);
@@ -42,12 +47,19 @@ public static class ExprExtensions
     public static ReadOnlyCollectionOfReadOnlyCollectionOfExpressions Hess(this Expr expr)
     {
         var vars = expr.GetVariables();
+        return expr.Hess(vars);
+    }
+
+    public static ReadOnlyCollectionOfReadOnlyCollectionOfExpressions Hess(
+        this Expr expr,
+        IEnumerable<VariableExpr> wrts)
+    {
         var hessian = new List<ReadOnlyCollection<Expr>>();
-        foreach (var var1 in vars)
+        foreach (var var1 in wrts)
         {
             var d1 = expr.Derivative(var1);
             var d2s = new List<Expr>();
-            foreach (var var2 in vars)
+            foreach (var var2 in wrts)
             {
                 var d2 = d1.Derivative(var2);
                 d2s.Add(d2);
